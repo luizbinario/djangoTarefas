@@ -1,0 +1,46 @@
+body {
+    display: flex;
+    justify-content: center;
+}
+
+.site {
+    width: 50%;
+    position: relative;
+    margin: 10px 0 10px 0;
+}
+
+.tarefa {
+    position: relative;
+    margin: 10px 0 0 0;
+}
+
+.tarefa-attrs {
+    position: relative;
+    display: flex;
+}
+
+.titulo {
+    flex-basis: 78%;
+    display: flex;
+    align-items: center;
+}
+
+.modal-excluir {
+    flex-basis: 80%;
+    display: flex;
+    align-items: center;
+}
+
+.action {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.action button {
+    position: relative;
+    margin: 0 0 0 5px;
+}
+
+.clear {
+    clear: both;
+}

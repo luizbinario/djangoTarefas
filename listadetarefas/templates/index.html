@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    <title>Lista de Tarefas em Django</title>
+{% endblock%}
+
+{% block content %}
+
+<div class="site card">
+    <div class="card-header alert alert-success">
+        <center><h1>Django Tarefas</h1></center>
+    </div>
+    <div class="card-body">
+        <div>
+            <form method="POST">{% csrf_token %}
+                <div class="input-group mb-3">
+                    {{ form.titulo }}
+                    <div class="input-group-append">
+                        <input type="submit" class='btn btn-primary' value="Salvar Tarefa">
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div>
+            {% for tarefa in tarefas %}
+                {% if tarefa.public %}
+                    <!-- Card Tarefa -->
+                    <div class="card shadow tarefa">
+                        <div class="card-header tarefa-attrs">
+                            <div class="titulo">{{tarefa.titulo}}</div>
+                            <div>
+                                <button class="btn btn-primary" alt="Editar" data-toggle="modal" data-target="#editar_{{tarefa.id}}"><i class="bi bi-pencil-fill"></i></button>
+                                <button class="btn btn-danger" alt="Excluir" data-toggle="modal" data-target="#excluir_{{tarefa.id}}"><i class="bi bi-trash-fill"></i></button>
+                                <button class="btn btn-info" alt="Arquivar" data-toggle="modal" data-target="#arquivar_{{tarefa.id}}"><i class="bi bi-archive"></i></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Modal Tarefa - Editar -->
+                    <div class="modal fade" id="editar_{{tarefa.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Editar tarefa "{{tarefa.titulo}}"?</h5>
+                                </div>
+                                <form action="tarefa_update" method="POST">{% csrf_token %}
+                                    <div class="modal-body">
+                                        <b>Detalhes: </b><br>
+                                        <input type="hidden" name="id" value="{{tarefa.id}}">
+                                        <input type="hidden" name="titulo" value="{{tarefa.titulo}}">
+                                        <textarea name="tarefa" cols="49" rows="5">{{tarefa.tarefa}}</textarea>
+                                    </div>
+                                    <div class="modal-footer">
+                                            <button type="submit" class="btn btn-success"><i class="bi bi-check-lg"></i></button>
+                                            <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="bi bi-x-lg"></i></button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Modal Tarefa - Excluir -->
+                    <div class="modal fade" id="excluir_{{tarefa.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Excluir tarefa "{{tarefa.titulo}}"?</h5>
+                                </div>
+                                <div class="modal-body">
+                                    <b>Detalhes: </b><br>
+                                    {{tarefa.tarefa}}
+                                </div>
+                                <div class="modal-footer">
+                                    <form action="tarefa_delete" method="POST">{% csrf_token %}
+                                        <input type="hidden" name="id" value="{{tarefa.id}}">
+                                        <button type="submit" class="btn btn-success"><i class="bi bi-check-lg"></i></button>
+                                        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="bi bi-x-lg"></i></button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Modal Tarefa - Arquivar -->
+                    <div class="modal fade" id="arquivar_{{tarefa.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Arquivar tarefa "{{tarefa.titulo}}"?</h5>
+                                </div>
+                                <div class="modal-body">
+                                    <b>Detalhes: </b><br>
+                                    {{tarefa.tarefa}}
+                                </div>
+                                <div class="modal-footer">
+                                    <form action="tarefa_archive" method="POST">{% csrf_token %}
+                                        <input type="hidden" name="id" value="{{tarefa.id}}">
+                                        <button type="submit" class="btn btn-success"><i class="bi bi-check-lg"></i></button>
+                                        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="bi bi-x-lg"></i></button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}
